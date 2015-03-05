@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <%= display_meta_tags(default_meta_tags) %>
+	<head>
+		<%= display_meta_tags(default_meta_tags) %>
 
 		<%= render "viewport" %>
 
@@ -9,23 +9,25 @@
 		<%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
 		<%= csrf_meta_tags %>
 
-    <%= render "favicons" %>
+		<%= render "favicons" %>
 
-    <%= csrf_meta_tags %>
+		<%= csrf_meta_tags %>
 
-    <%= render "old_internet_explorer" %>
+		<%= render "old_internet_explorer" %>
 
-    <%= render "analytics" %>
-  </head>
-  <body id="<%= body_id %>">
-    <%= render "notifications" %>
+		<%= render "analytics" %>
+	</head>
+	<body id="<%= body_id %>">
+		<%= render "notifications" %>
 
-    <%= render "navigation" %>
+		<%= render "navigation" %>
 
-    <%= yield %>
+		<div class="container">
+			<%= yield %>
+		</div>
 
-    <%= render "footer" %>
+		<%= render "footer" %>
 
-    <%= javascript_include_tag "application" %>
-  </body>
+		<%= javascript_include_tag "application" %>
+	</body>
 </html>
