@@ -48,6 +48,9 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 # Static pages
 gem 'high_voltage', '~> 2.2.1'
 
+# Meta tags
+gem 'meta-tags', '~> 2.0.0'
+
 
 
 
