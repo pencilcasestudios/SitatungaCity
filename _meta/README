@@ -498,10 +498,10 @@ cd ~/Code/SitatungaCity/_meta/examples/config
 scp config.clientcase.net.yml deploy@asher.vps:~/config.yml
 
 cd ~/Code/SitatungaCity/_meta/examples/database
-scp database.clientcase.net.yml deploy@asher.vps:~/database.yml
+scp database.sitatungacity.clientcase.net.yml deploy@asher.vps:~/database.yml
 
 cd ~/Code/SitatungaCity/_meta/examples/env
-scp .env.clientcase.net deploy@asher.vps:~/.env
+scp .env.sitatungacity.clientcase.net deploy@asher.vps:~/.env
 
 cd ~/Code/SitatungaCity/
 ssh deploy@asher.vps
