@@ -7,7 +7,7 @@ defaults: &defaults
   http_basic_password: dev  # Update this in production
   test_user_password: password
 
-  application_name: RoanPark
+  application_name: SitatungaCity
   applications_folder: "/var/Apps"
   gemset_name: roan-park-rails.4.2.x
   ruby_version: ruby-2.2.0
