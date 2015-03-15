@@ -281,6 +281,7 @@ grant all on SitatungaCity_virtual_development.* to 'sitatungacity'@'localhost';
 grant all on SitatungaCity_virtual_test.* to 'sitatungacity'@'localhost';
 
 # Setup the MariaDB database:
+ssh deploy@gad.vps
 mysql -u sitatungacity -p
 create database SitatungaCity_virtual;
 create database SitatungaCity_virtual_development;
@@ -487,6 +488,7 @@ grant all on SitatungaCity_staging_development.* to 'sitatungacity'@'localhost';
 grant all on SitatungaCity_staging_test.* to 'sitatungacity'@'localhost';
 
 # Setup the MariaDB database:
+ssh deploy@gad.vps
 mysql -u sitatungacity -p
 create database SitatungaCity_staging;
 create database SitatungaCity_staging_development;
@@ -693,6 +695,7 @@ grant all on SitatungaCity_production_development.* to 'sitatungacity'@'localhos
 grant all on SitatungaCity_production_test.* to 'sitatungacity'@'localhost';
 
 # Setup the MariaDB database:
+ssh deploy@gad.vps
 mysql -u sitatungacity -p
 create database SitatungaCity_production;
 create database SitatungaCity_production_development;
