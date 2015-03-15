@@ -799,6 +799,8 @@ apple-touch-icon: 57x57
 # With Rubygems
 # Ref: https://github.com/toy/image_optim
 # Ref: https://github.com/toy/image_optim#usage
+#e.g.
+image_optim --no-svgo --no-pngquant --no-pngout --no-pngcrush *.jpg
 
 
 # MariaDB
