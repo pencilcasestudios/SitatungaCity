@@ -495,7 +495,7 @@ create database SitatungaCity_staging_test;
 # Setup the YAML and .env configuration files:
 # From the development machine
 cd ~/Code/SitatungaCity/_meta/examples/config
-scp config.clientcase.net.yml deploy@asher.vps:~/config.yml
+scp config.sitatungacity.clientcase.net.yml deploy@asher.vps:~/config.yml
 
 cd ~/Code/SitatungaCity/_meta/examples/database
 scp database.sitatungacity.clientcase.net.yml deploy@asher.vps:~/database.yml
