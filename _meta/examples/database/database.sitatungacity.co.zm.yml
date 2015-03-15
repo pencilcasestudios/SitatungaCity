@@ -1,0 +1,29 @@
+development:
+  adapter: mysql2
+  encoding: utf8
+  reconnect: false
+  database: SitatungaCity_production_development
+  pool: 5
+  username: sitatungacity
+  password: ProductionSitatungaCityPassword
+  host: localhost
+
+test:
+  adapter: mysql2
+  encoding: utf8
+  reconnect: false
+  database: SitatungaCity_production_test
+  pool: 5
+  username: sitatungacity
+  password: ProductionSitatungaCityPassword
+  host: localhost
+
+production:
+  adapter: mysql2
+  encoding: utf8
+  reconnect: false
+  database: SitatungaCity_production
+  pool: 5
+  username: sitatungacity
+  password: ProductionSitatungaCityPassword
+  host: localhost
