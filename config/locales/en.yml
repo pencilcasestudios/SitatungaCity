@@ -36,3 +36,17 @@ en:
     meta_tags:
       description: "Sitatunga City"
       keywords: "sitatunga, city, galaunia, farms, limited, real, estate, project, housing, lusaka, zambia"
+
+  # Controllers
+
+  # Models
+
+  # Views
+  views:
+    pages:
+      contact:
+        title: Contact Us
+      home:
+        copy:
+          welcome_html: |
+            <p>Welcome home.</p>
