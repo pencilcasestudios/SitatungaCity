@@ -332,6 +332,7 @@ cp .env /var/Apps/SitatungaCity/virtual/shared/
 exit
 
 # From the development machine
+cd ~/Code/SitatungaCity/
 cap virtual deploy:check
 cap virtual deploy
 
@@ -537,6 +538,7 @@ cp .env /var/Apps/SitatungaCity/staging/shared/
 exit
 
 # From the development machine
+cd ~/Code/SitatungaCity/
 cap staging deploy:check
 cap staging deploy
 
@@ -747,6 +749,7 @@ cap production deploy
 
 
 # After deploying the app
+cd ~/Code/SitatungaCity/
 # From the production machine
 sudo service monit reload
 
