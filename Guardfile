@@ -44,7 +44,10 @@ end
 #  * zeus: 'zeus rspec' (requires the server to be started separately)
 #  * 'just' rspec: 'rspec'
 
-guard :rspec, cmd: "bundle exec rspec" do
+# Ref: http://girders.org/blog/2014/02/06/setup-rails-41-spring-rspec-and-guard/
+#guard :rspec, cmd: "bundle exec rspec" do
+#guard :rspec, cmd: "spring rspec" do
+guard :rspec, cmd:"spring rspec", all_on_start: true, all_after_pass: true do
   require "guard/rspec/dsl"
   dsl = Guard::RSpec::Dsl.new(self)
 
@@ -87,3 +90,23 @@ guard :rspec, cmd: "bundle exec rspec" do
     Dir[File.join("**/#{m[1]}.feature")][0] || "spec/acceptance"
   end
 end
+
+
+
+
+
+
+
+
+
+# Notifications
+# Ref: https://github.com/guard/guard/wiki/System-notifications
+notification :tmux,
+  display_message: true,
+  timeout: 5, # in seconds
+  default_message_format: '%s >> %s',
+  # the first %s will show the title, the second the message
+  # Alternately you can also configure *success_message_format*,
+  # *pending_message_format*, *failed_message_format*
+  line_separator: ' > ', # since we are single line we need a separator
+  color_location: 'status-left-bg' # to customize which tmux element will change color
