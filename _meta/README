@@ -1,0 +1,846 @@
+#----------------------------------------------------------------------
+# Development setup
+# Setting up the development environment after a fresh repository clone
+#----------------------------------------------------------------------
+cd ~/Code/SitatungaCity
+cp _meta/examples/database/database.yml config # Setup the database
+cp _meta/examples/config/config.yml config # Setup the configuration files
+cp -r _meta/examples/capistrano/deploy* config # Setup the capistrano deployment recipe
+
+# Set up symbolic link to externlised assets
+cd ~/Code/SitatungaCity/app/assets
+ln -nfs ~/Dropbox/Sitatunga\ City/Externalised\ Assets/Sitatunga\ City\ Website/Images/ images
+ln -nfs ~/Dropbox/Sitatunga\ City/Externalised\ Assets/Sitatunga\ City\ Website/PDFs/ pdfs
+
+# Set up the hosts (/etc/hosts)
+127.0.0.1	sitatungacity.dev		www.sitatungacity.dev
+
+# Setup deployment references:
+git remote add virtual deploy@rails.vm:/var/Repositories/Git/SitatungaCity.git
+git remote add staging deploy@asher.vps:/var/Repositories/Git/SitatungaCity.git
+git remote add production deploy@gad.vps:/var/Repositories/Git/SitatungaCity.git
+
+
+
+
+# Tests
+#======
+# Git
+git push virtual
+git push staging
+git push production
+
+
+# Bundle install
+cd ~/Code/SitatungaCity
+bundle install
+
+
+# Bundle update
+cd ~/Code/SitatungaCity
+bundle update
+gem cleanup
+
+
+# Guard for testing
+cd ~/Code/SitatungaCity
+rake db:drop
+rake db:setup
+rake db:test:prepare
+bundle exec guard
+
+
+
+
+# Running the Application in development
+#=======================================
+cd ~/Code/SitatungaCity
+rails server --port=3101 --binding=sitatungacity.dev # In one terminal window - to run the application
+
+cd ~/Code/SitatungaCity
+rake jobs:work # In another terminal window - to run delayed job
+
+cd ~/Code/SitatungaCity
+rails console # In another terminal window - to manage administrators
+
+# View the site in a browser by visiting
+http://sitatungacity.dev:3101
+
+
+
+
+# Administration
+#===============
+# Creating an administrator
+# In the Rails console, select the user:
+u = User.first
+u.admin?
+
+# Promote the user to administrator
+u.promote
+u.save
+u.admin?
+
+
+
+
+# Gem management
+#===============
+# MAINTAIN GEM BUNDLE
+cd ~/Code/SitatungaCity
+bundle update
+gem cleanup
+
+# DELETE ALL INSTALLED GEMS
+gem list | cut -d" " -f1 | xargs gem uninstall -aIx
+
+
+
+
+# Continuous Application Deployment
+#==================================
+# VIRTUAL
+cd ~/Code/SitatungaCity
+git checkout master
+git merge dev
+git push
+git push virtual
+cap virtual deploy
+git tag "`date +virtual_%Y-%m-%d_%H%M%S`"
+git push bitbucket master
+git push origin master --tags
+git push bitbucket master --tags
+
+# STAGING
+cd ~/Code/SitatungaCity
+git checkout master
+git merge dev
+git push
+git push staging
+cap staging deploy
+git tag "`date +staging_%Y-%m-%d_%H%M%S`"
+git push bitbucket master
+git push origin master --tags
+git push bitbucket master --tags
+
+# PRODUCTION
+cd ~/Code/SitatungaCity
+git checkout master
+git merge dev
+git push
+git push production
+cap production deploy
+git tag "`date +production_%Y-%m-%d_%H%M%S`"
+git push bitbucket master
+git push origin master --tags
+git push bitbucket master --tags
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#----------------------------------------------------------------------
+# Virtual setup
+#----------------------------------------------------------------------
+# Need:
+# Git
+# ImageMagick
+# MariaDB					# Remember to install libmariadbclient-dev (for the # mysql2 gem to work)
+# nginx
+# nodejs				# JavaScript runtime
+# RVM
+# SSH
+
+
+# Test SSH access:
+ssh deploy@rails.vm
+ssh vladimir@rails.vm
+
+# Set up the hosts (/etc/hosts):
+ssh vladimir@rails.vm
+
+# Make sure the following line is in /etc/hosts:
+127.0.0.1 rails.vm
+
+# Test with
+ping rails.vm
+
+
+# Check that SSH "loops back" on the virtual machine (host key verification):
+# On the local development machine
+ssh deploy@rails.vm
+
+# On the virtual machine
+ssh deploy@rails.vm
+
+# Or
+
+# If the "loop back" fails:
+ssh-keygen
+ssh-copy-id deploy@rails.vm
+
+
+# Set up the Repository folder
+ssh vladimir@rails.vm
+sudo mkdir -p /var/Repositories/Git
+sudo chown deploy:deploy /var/Repositories
+
+# Create the Git repository:
+ssh deploy@rails.vm
+cd /var/Repositories/Git/
+mkdir -p SitatungaCity.git
+cd SitatungaCity.git
+git init --bare
+exit
+
+# Push to the Git repository:
+# From the development machine:
+cd ~/Code/SitatungaCity
+git remote add virtual deploy@rails.vm:/var/Repositories/Git/SitatungaCity.git
+git push virtual master # or git push virtual
+
+
+# Set up the Apps folder
+ssh vladimir@rails.vm
+sudo mkdir -p /var/Apps
+sudo chown deploy:deploy /var/Apps
+
+
+# Create the AssetsVault folder
+ssh vladimir@rails.vm
+sudo mkdir -p /var/AssetsVault
+sudo chown deploy:deploy /var/AssetsVault
+
+
+# Configure nginx
+# On the development machine
+cd ~/Code/SitatungaCity/_meta/examples/nginx
+scp nginx.sitatungacity.virtual.conf vladimir@rails.vm:~/sitatungacity.virtual.conf
+
+
+# On the virtual machine
+# Set up the nginx configuration
+ssh vladimir@rails.vm
+sudo mv ~/sitatungacity.virtual.conf /etc/nginx/sites-available
+sudo ln -nfs /etc/nginx/sites-available/sitatungacity.virtual.conf /etc/nginx/sites-enabled/sitatungacity.virtual
+
+
+# Generate an SSL certificate and key:
+sudo mkdir -p /etc/nginx/ssl
+cd /etc/nginx/ssl
+sudo mkdir -p SitatungaCity
+cd SitatungaCity
+sudo openssl genrsa -des3 -out sitatungacity.virtual.key 1024
+
+# pass phrase: virtual
+
+sudo openssl req -new -key sitatungacity.virtual.key -out sitatungacity.virtual.csr
+
+# Country Name: ZM
+# Province: Lusaka Province
+# Locality Name: Lusaka
+# Organisation Name: Galaunia Farms Limited
+# Orgnisational Unit Name: Sitatunga City
+# Common Name: sitatungacity.virtual.
+# Email: itsupport@pencilcasestudios.com
+# Challenge password: <Blank>
+# Optional Company Name: <Blank>
+
+sudo cp sitatungacity.virtual.key sitatungacity.virtual.key.original
+sudo openssl rsa -in sitatungacity.virtual.key.original -out sitatungacity.virtual.key
+
+sudo openssl x509 -req -days 365 -in sitatungacity.virtual.csr -signkey sitatungacity.virtual.key -out sitatungacity.virtual.crt
+
+
+# Test the nginx configuration:
+sudo service nginx configtest
+
+# If all is well, load the new nginx configuration:
+sudo service nginx reload
+
+# Setup the MariaDB database user:
+ssh vladimir@rails.vm
+mysql -u root -p
+create user 'sitatungacity'@'localhost' identified by 'VirtualSitatungaCityPassword';
+grant all on SitatungaCity_virtual.* to 'sitatungacity'@'localhost';
+grant all on SitatungaCity_virtual_development.* to 'sitatungacity'@'localhost';
+grant all on SitatungaCity_virtual_test.* to 'sitatungacity'@'localhost';
+
+# Setup the MariaDB database:
+mysql -u sitatungacity -p
+create database SitatungaCity_virtual;
+create database SitatungaCity_virtual_development;
+create database SitatungaCity_virtual_test;
+
+
+# Setup the YAML and .env configuration files:
+# From the development machine
+cd ~/Code/SitatungaCity/_meta/examples/config
+scp config.virtual.yml deploy@rails.vm:~/config.yml
+
+cd ~/Code/SitatungaCity/_meta/examples/database
+scp database.virtual.yml deploy@rails.vm:~/database.yml
+
+cd ~/Code/SitatungaCity/_meta/examples/env
+scp .env.virtual deploy@rails.vm:~/.env
+
+cd ~/Code/SitatungaCity/
+ssh deploy@rails.vm
+
+# From the virtual machine (as the deploy user)
+cd
+mkdir -p ~/Projects/Configurations/SitatungaCity/virtual
+mv database.yml ~/Projects/Configurations/SitatungaCity/virtual/
+mv config.yml ~/Projects/Configurations/SitatungaCity/virtual/
+mv .env ~/Projects/Configurations/SitatungaCity/virtual/
+exit
+
+# From the development machine
+# Capistrano steps for initial deployment
+# VIRTUAL MACHINE DEPLOYMENT
+cd ~/Code/SitatungaCity/
+git checkout master
+git merge dev
+git push
+git push virtual # May need to 'git push virtual master'
+cap virtual git:check
+cap virtual deploy:setup_asset_vault
+cap virtual deploy:check # Update configuration files and create the database after this
+
+# From the virtual machine (as the deploy user)
+# After running cap virtual deploy:check
+ssh deploy@rails.vm
+cd ~/Projects/Configurations/SitatungaCity/virtual
+
+cp *.yml /var/Apps/SitatungaCity/virtual/shared/config/
+cp .env /var/Apps/SitatungaCity/virtual/shared/
+
+exit
+
+# From the development machine
+cap virtual deploy:check
+cap virtual deploy
+
+
+# After deploying the app
+# From the virtual machine
+sudo service monit reload
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#----------------------------------------------------------------------
+# Staging setup
+#----------------------------------------------------------------------
+# Need:
+# Git
+# ImageMagick
+# MariaDB					# Remember to install libmariadbclient-dev (for the # mysql2 gem to work)
+# nginx
+# nodejs				# JavaScript runtime
+# RVM
+# SSH
+
+
+# Test SSH access:
+ssh deploy@asher.vps
+ssh silumesii@asher.vps
+
+# Set up the hosts (/etc/hosts):
+ssh silumesii@asher.vps
+
+# Make sure the following line is in /etc/hosts:
+127.0.0.1 asher.vps
+
+# Test with
+ping asher.vps
+
+
+# Check that SSH "loops back" on the staging machine (host key verification):
+# On the local development machine
+ssh deploy@asher.vps
+
+# On the staging machine
+ssh deploy@asher.vps
+
+# Or
+
+# If the "loop back" fails:
+ssh-keygen
+ssh-copy-id deploy@asher.vps
+
+
+# Set up the Repository folder
+ssh silumesii@asher.vps
+sudo mkdir -p /var/Repositories/Git
+sudo chown deploy:deploy /var/Repositories
+
+# Create the Git repository:
+ssh deploy@asher.vps
+cd /var/Repositories/Git/
+mkdir -p SitatungaCity.git
+cd SitatungaCity.git
+git init --bare
+exit
+
+# Push to the Git repository:
+# From the development machine:
+cd ~/Code/SitatungaCity
+git remote add staging deploy@asher.vps:/var/Repositories/Git/SitatungaCity.git
+git push staging master # or git push staging
+
+
+# Set up the Apps folder
+ssh silumesii@asher.vps
+sudo mkdir -p /var/Apps
+sudo chown deploy:deploy /var/Apps
+
+
+# Create the AssetsVault folder
+ssh silumesii@asher.vps
+sudo mkdir -p /var/AssetsVault
+sudo chown deploy:deploy /var/AssetsVault
+
+
+# Configure nginx
+# On the development machine
+cd ~/Code/SitatungaCity/_meta/examples/nginx
+scp nginx.sitatungacity.clientcase.net.conf silumesii@asher.vps:~/sitatungacity.clientcase.net.conf
+
+
+# On the staging machine
+# Set up the nginx configuration
+ssh silumesii@asher.vps
+sudo mv ~/sitatungacity.clientcase.net.conf /etc/nginx/sites-available
+sudo ln -nfs /etc/nginx/sites-available/sitatungacity.clientcase.net.conf /etc/nginx/sites-enabled/sitatungacity.clientcase.net
+
+
+# Generate an SSL certificate and key:
+sudo mkdir -p /etc/nginx/ssl
+cd /etc/nginx/ssl
+sudo mkdir -p SitatungaCity
+cd SitatungaCity
+sudo openssl genrsa -des3 -out sitatungacity.clientcase.net.key 1024
+
+# pass phrase: sitatungacity
+
+sudo openssl req -new -key sitatungacity.clientcase.net.key -out sitatungacity.clientcase.net.csr
+
+# Country Name: ZM
+# Province: Lusaka Province
+# Locality Name: Lusaka
+# Organisation Name: Galaunia Farms Limited
+# Orgnisational Unit Name: Sitatunga City
+# Common Name: sitatungacity.clientcase.net.
+# Email: itsupport@pencilcasestudios.com
+# Challenge password: <Blank>
+# Optional Company Name: <Blank>
+
+sudo cp sitatungacity.clientcase.net.key sitatungacity.clientcase.net.key.original
+sudo openssl rsa -in sitatungacity.clientcase.net.key.original -out sitatungacity.clientcase.net.key
+
+sudo openssl x509 -req -days 365 -in sitatungacity.clientcase.net.csr -signkey sitatungacity.clientcase.net.key -out sitatungacity.clientcase.net.crt
+
+
+# Test the nginx configuration:
+sudo service nginx configtest
+
+# If all is well, load the new nginx configuration:
+sudo service nginx reload
+
+# Setup the MariaDB database user:
+ssh silumesii@asher.vps
+mysql -u root -p
+create user 'sitatungacity'@'localhost' identified by 'StagingSitatungaCityPassword';
+grant all on SitatungaCity_staging.* to 'sitatungacity'@'localhost';
+grant all on SitatungaCity_staging_development.* to 'sitatungacity'@'localhost';
+grant all on SitatungaCity_staging_test.* to 'sitatungacity'@'localhost';
+
+# Setup the MariaDB database:
+mysql -u sitatungacity -p
+create database SitatungaCity_staging;
+create database SitatungaCity_staging_development;
+create database SitatungaCity_staging_test;
+
+
+# Setup the YAML and .env configuration files:
+# From the development machine
+cd ~/Code/SitatungaCity/_meta/examples/config
+scp config.clientcase.net.yml deploy@asher.vps:~/config.yml
+
+cd ~/Code/SitatungaCity/_meta/examples/database
+scp database.clientcase.net.yml deploy@asher.vps:~/database.yml
+
+cd ~/Code/SitatungaCity/_meta/examples/env
+scp .env.clientcase.net deploy@asher.vps:~/.env
+
+cd ~/Code/SitatungaCity/
+ssh deploy@asher.vps
+
+# From the staging machine (as the deploy user)
+cd
+mkdir -p ~/Projects/Configurations/SitatungaCity/staging
+mv database.yml ~/Projects/Configurations/SitatungaCity/staging/
+mv config.yml ~/Projects/Configurations/SitatungaCity/staging/
+mv .env ~/Projects/Configurations/SitatungaCity/staging/
+exit
+
+# From the development machine
+# Capistrano steps for initial deployment
+# VIRTUAL MACHINE DEPLOYMENT
+cd ~/Code/SitatungaCity/
+git checkout master
+git merge dev
+git push
+git push staging # May need to 'git push staging master'
+cap staging git:check
+cap staging deploy:setup_asset_vault
+cap staging deploy:check # Update configuration files and create the database after this
+
+# From the staging machine (as the deploy user)
+# After running cap staging deploy:check
+ssh deploy@asher.vps
+cd ~/Projects/Configurations/SitatungaCity/staging
+
+cp *.yml /var/Apps/SitatungaCity/staging/shared/config/
+cp .env /var/Apps/SitatungaCity/staging/shared/
+
+exit
+
+# From the development machine
+cap staging deploy:check
+cap staging deploy
+
+
+# After deploying the app
+# From the staging machine
+sudo service monit reload
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#----------------------------------------------------------------------
+# Production setup
+#----------------------------------------------------------------------
+# Need:
+# Git
+# ImageMagick
+# MariaDB					# Remember to install libmariadbclient-dev (for the # mysql2 gem to work)
+# nginx
+# nodejs				# JavaScript runtime
+# RVM
+# SSH
+
+
+# Test SSH access:
+ssh deploy@gad.vps
+ssh silumesii@gad.vps
+
+# Set up the hosts (/etc/hosts):
+ssh silumesii@gad.vps
+
+# Make sure the following line is in /etc/hosts:
+127.0.0.1 gad.vps
+
+# Test with
+ping gad.vps
+
+
+# Check that SSH "loops back" on the production machine (host key verification):
+# On the local development machine
+ssh deploy@gad.vps
+
+# On the production machine
+ssh deploy@gad.vps
+
+# Or
+
+# If the "loop back" fails:
+ssh-keygen
+ssh-copy-id deploy@gad.vps
+
+
+# Set up the Repository folder
+ssh silumesii@gad.vps
+sudo mkdir -p /var/Repositories/Git
+sudo chown deploy:deploy /var/Repositories
+
+# Create the Git repository:
+ssh deploy@gad.vps
+cd /var/Repositories/Git/
+mkdir -p SitatungaCity.git
+cd SitatungaCity.git
+git init --bare
+exit
+
+# Push to the Git repository:
+# From the development machine:
+cd ~/Code/SitatungaCity
+git remote add production deploy@gad.vps:/var/Repositories/Git/SitatungaCity.git
+git push production master # or git push production
+
+
+# Set up the Apps folder
+ssh silumesii@gad.vps
+sudo mkdir -p /var/Apps
+sudo chown deploy:deploy /var/Apps
+
+
+# Create the AssetsVault folder
+ssh silumesii@gad.vps
+sudo mkdir -p /var/AssetsVault
+sudo chown deploy:deploy /var/AssetsVault
+
+
+# Configure nginx
+# On the development machine
+cd ~/Code/SitatungaCity/_meta/examples/nginx
+scp nginx.sitatungacity.co.zm.conf silumesii@gad.vps:~/sitatungacity.co.zm.conf
+
+
+# On the production machine
+# Set up the nginx configuration
+ssh silumesii@gad.vps
+sudo mv ~/sitatungacity.co.zm.conf /etc/nginx/sites-available
+sudo ln -nfs /etc/nginx/sites-available/sitatungacity.co.zm.conf /etc/nginx/sites-enabled/sitatungacity.co.zm
+
+
+# Generate an SSL certificate and key:
+sudo mkdir -p /etc/nginx/ssl
+cd /etc/nginx/ssl
+sudo mkdir -p SitatungaCity
+cd SitatungaCity
+sudo openssl genrsa -des3 -out sitatungacity.co.zm.key 1024
+
+# pass phrase: sitatungacity
+
+sudo openssl req -new -key sitatungacity.co.zm.key -out sitatungacity.co.zm.csr
+
+# Country Name: ZM
+# Province: Lusaka Province
+# Locality Name: Lusaka
+# Organisation Name: Galaunia Farms Limited
+# Orgnisational Unit Name: Sitatunga City
+# Common Name: sitatungacity.co.zm.
+# Email: itsupport@pencilcasestudios.com
+# Challenge password: <Blank>
+# Optional Company Name: <Blank>
+
+sudo cp sitatungacity.co.zm.key sitatungacity.co.zm.key.original
+sudo openssl rsa -in sitatungacity.co.zm.key.original -out sitatungacity.co.zm.key
+
+sudo openssl x509 -req -days 365 -in sitatungacity.co.zm.csr -signkey sitatungacity.co.zm.key -out sitatungacity.co.zm.crt
+
+
+# Test the nginx configuration:
+sudo service nginx configtest
+
+# If all is well, load the new nginx configuration:
+sudo service nginx reload
+
+# Setup the MariaDB database user:
+ssh silumesii@gad.vps
+mysql -u root -p
+create user 'sitatungacity'@'localhost' identified by 'ProductionSitatungaCityPassword';
+grant all on SitatungaCity_production.* to 'sitatungacity'@'localhost';
+grant all on SitatungaCity_production_development.* to 'sitatungacity'@'localhost';
+grant all on SitatungaCity_production_test.* to 'sitatungacity'@'localhost';
+
+# Setup the MariaDB database:
+mysql -u sitatungacity -p
+create database SitatungaCity_production;
+create database SitatungaCity_production_development;
+create database SitatungaCity_production_test;
+
+
+# Setup the YAML and .env configuration files:
+# From the development machine
+cd ~/Code/SitatungaCity/_meta/examples/config
+scp config.sitatungacity.co.zm.yml deploy@gad.vps:~/config.yml
+
+cd ~/Code/SitatungaCity/_meta/examples/database
+scp database.sitatungacity.co.zm.yml deploy@gad.vps:~/database.yml
+
+cd ~/Code/SitatungaCity/_meta/examples/env
+scp .env.sitatungacity.co.zm deploy@gad.vps:~/.env
+
+cd ~/Code/SitatungaCity/
+ssh deploy@gad.vps
+
+# From the production machine (as the deploy user)
+cd
+mkdir -p ~/Projects/Configurations/SitatungaCity/production
+mv database.yml ~/Projects/Configurations/SitatungaCity/production/
+mv config.yml ~/Projects/Configurations/SitatungaCity/production/
+mv .env ~/Projects/Configurations/SitatungaCity/production/
+exit
+
+# From the development machine
+# Capistrano steps for initial deployment
+# VIRTUAL MACHINE DEPLOYMENT
+cd ~/Code/SitatungaCity/
+git checkout master
+git merge dev
+git push
+git push production # May need to 'git push production master'
+cap production git:check
+cap production deploy:setup_asset_vault
+cap production deploy:check # Update configuration files and create the database after this
+
+# From the production machine (as the deploy user)
+# After running cap production deploy:check
+ssh deploy@gad.vps
+cd ~/Projects/Configurations/SitatungaCity/production
+
+cp *.yml /var/Apps/SitatungaCity/production/shared/config/
+cp .env /var/Apps/SitatungaCity/production/shared/
+
+exit
+
+# From the development machine
+cap production deploy:check
+cap production deploy
+
+
+# After deploying the app
+# From the production machine
+sudo service monit reload
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Hints
+#======
+
+# gzip
+#-----
+gzip database.sql
+
+
+# ImageMagick
+#------------
+convert -resize 350x525 -gravity center -extent 350x525 brochure_advertisement_cover.png tmp.png
+convert  -alpha off FILE.pdf FILE.png
+mogrify -resize 412x412 -gravity center -extent 310x438 -format jpg *.pdf
+
+
+# ImageOptim
+#-----------
+# With Node
+# Ref: http://www.smashingmagazine.com/2013/12/17/imageoptim-cli-batch-compression-tool/
+npm install -g imageoptim-cli
+imageoptim --image-alpha --jpeg-mini --quit --directory ~/Sites/MyProject
+
+
+# Image sizes
+#------------
+favicon.ico: 16x16
+apple-touch-icon: 57x57
+
+# With Rubygems
+# Ref: https://github.com/toy/image_optim
+# Ref: https://github.com/toy/image_optim#usage
+
+
+# MariaDB
+#--------
+# Database export:
+# The EXTENSION can be something like "sql"
+mysqldump -u USERNAME -p DATABASE_NAME > ~/OUTPUTFILE.EXTENSION
+
+# Database import:
+mysql -u USERNAME -p DATABASE_NAME < BACKUPFILE
+
+# Set or update user password
+set password for 'username'@'localhost' = password('cleartext password');
+
+
+# Ruby
+#-----
+# Working with gemsets:
+rvm @global do gem update
+rvm @global do gem cleanup
+
+
+# Billing
+#--------
+# Use git_time_extractor
+cd ~/Code/SitatungaCity
+git_time_extractor > ~/Desktop/sitatungacity_time_log.csv --initial-effort 15 --merge-effort 15 --session-duration 2
+
+
+
+
+
+
+
+
+
+# Links
+#======
+http://gorails.com/deploy/ubuntu/12.04
+http://stackoverflow.com/questions/3031412/how-to-export-a-mysql-database-using-command-prompt
+http://webcheatsheet.com/SQL/mysql_backup_restore.php
+http://www.modrails.com/documentation/Users%20guide%20Nginx.html (Note the "RVM helper tool" section)
+https://dev.mysql.com/doc/refman/5.0/en/set-password.html
+https://dev.mysql.com/doc/refman/5.1/en/mysqldump.html
+https://rvm.io/gemsets/global
