@@ -15,3 +15,11 @@
 /log/*
 !/log/.keep
 /tmp
+
+
+
+
+# Don't version these assests
+# Serve them from an externalised source
+app/assets/images
+app/assets/pdfs
