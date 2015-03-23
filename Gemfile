@@ -58,6 +58,9 @@ gem 'highline', '~> 1.7.1'
 # Ref: http://daniel.fone.net.nz/blog/2013/05/20/a-better-way-to-manage-the-rails-secret-token/
 gem 'dotenv-rails', '~> 2.0.0'
 
+# Decimals Roman Numerals
+gem 'roman-numerals', '~> 0.3.0'
+
 
 
 
@@ -116,6 +119,10 @@ group :development, :test do
 
   # Use RVM with Capistrano (Capistrano version 3 or higher)
   gem 'rvm1-capistrano3', '~> 1.3.2.2', require: false
+
+  # Rails specific Capistrano tasks which are not part of the official rails gem
+  # Ref: https://github.com/dei79/capistrano-rails-collection
+  gem 'capistrano-rails-collection', '~> 0.0.3'
 
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   #gem 'spring'
