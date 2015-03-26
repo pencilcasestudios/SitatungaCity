@@ -3,6 +3,12 @@ module ApplicationHelper
     controller.controller_name
   end
 
+  def body_class(body_class)
+    content_for(:body_class) do
+      body_class
+    end
+  end
+
   # Ref: https://github.com/kpumuk/meta-tags
   def default_meta_tags
     {
