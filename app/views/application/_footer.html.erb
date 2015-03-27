@@ -1,0 +1,7 @@
+<footer class="footer">
+	<div class="container">
+		<p>
+			&copy; <%= RomanNumerals.to_roman(Time.zone.now.year) %> <%= link_to t("application.name"), root_path, title: t("application.name") %>. <%= t("views.application._footer.copy.website_by") %> <%= link_to t("application.developer.name"), t("application.developer.url"), title: t("views.application._footer.link.title.developer") %>.
+		</p>
+	</div><!-- /.container -->
+</footer><!-- /.footer -->
