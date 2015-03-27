@@ -15,4 +15,5 @@
 //= require turbolinks
 //= require bootstrap
 //= require vegas
+//= require rwdImageMaps
 //= require_tree .
