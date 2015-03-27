@@ -1,41 +1,51 @@
-<p id="notice"><%= notice %></p>
+<div class="row">
+  <div class="col-lg-12">
+    <header>
+      <h1><%= title t("views.housing_projects.index.title") %></h1>
+    </header>
+  </div>
+</div><!-- /.row -->
 
-<h1>Listing Housing Projects</h1>
 
-<table>
-  <thead>
-    <tr>
-      <th>Cover image</th>
-      <th>Gps coordinates</th>
-      <th>Name</th>
-      <th>Plot layout image</th>
-      <th>Plot layout image dimensions</th>
-      <th>State</th>
-      <th>Subdomain</th>
-      <th>Summary</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
 
-  <tbody>
+
+<div class="row">
+  <div class="col-lg-12">
     <% @housing_projects.each do |housing_project| %>
-      <tr>
-        <td><%= housing_project.cover_image %></td>
-        <td><%= housing_project.gps_coordinates %></td>
-        <td><%= housing_project.name %></td>
-        <td><%= housing_project.plot_layout_image %></td>
-        <td><%= housing_project.plot_layout_image_dimensions %></td>
-        <td><%= housing_project.state %></td>
-        <td><%= housing_project.subdomain %></td>
-        <td><%= housing_project.summary %></td>
-        <td><%= link_to 'Show', housing_project %></td>
-        <td><%= link_to 'Edit', edit_housing_project_path(housing_project) %></td>
-        <td><%= link_to 'Destroy', housing_project, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
+      <section class="<%= housing_project.subdomain %> plot details">
+
+        <h2><%= housing_project.name %></h2>
+
+        <p><%= housing_project.summary %></p>
+
+        <%= t("views.housing_projects.index.copy.hover_over_html") %>
+
+        <%= image_tag("land_projects/#{housing_project.subdomain}/#{housing_project.plot_layout_image}",  width: "#{housing_project.image_map_width}", height: "#{housing_project.image_map_height}", class: "img-responsive center-block", usemap: "#plot_layout_map_#{ housing_project.id }") %>
+
+        <map name="plot_layout_map_<%= housing_project.id %>">
+          <% housing_project.plots.each do |plot| %>
+            <% if plot.image_map_coordinates.present? %>
+              <area
+                shape="<%= plot.image_map_shape %>"
+                coords="<%= plot.image_map_coordinates.join(", ") %>"
+                data-toggle="modal"
+                href="<%= plot_path(plot) %>"
+                alt="<%= plot.street_address %>. <%= t("views.housing_projects.index.copy.plot_availability.is_#{plot.is_available}") %>."
+                title="<%= plot.street_address %>. <%= t("views.housing_projects.index.copy.plot_availability.is_#{plot.is_available}") %>."
+              />
+            <% end %>
+          <% end %>
+        </map>
+      </section><!-- /.<%= housing_project.subdomain %> -->
     <% end %>
-  </tbody>
-</table>
+  </div>
+</div><!-- /.row -->
 
-<br>
 
-<%= link_to 'New Housing project', new_housing_project_path %>
+
+
+<script type="text/javascript">
+  $(document).ready(function(e) {
+    $('img[usemap]').rwdImageMaps();
+  });
+</script>

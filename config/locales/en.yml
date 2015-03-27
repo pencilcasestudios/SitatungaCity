@@ -78,3 +78,16 @@ en:
           title:
             learn_more: Learn more
         title: Sitatunga City
+
+
+
+
+    housing_projects:
+      index:
+        copy:
+          hover_over_html: |
+            <p>On the map, click on a plot for more detail.</p>
+          plot_availability:
+            is_false: Sold
+            is_true: Available
+        title: The Residential Estate
