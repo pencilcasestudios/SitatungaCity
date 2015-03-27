@@ -1,3 +1,65 @@
+// Common settings
+@import "common";
+
+
+
+
+a {
+	&.btn {
+		color: $white_faded;
+
+		&:hover {
+			color: $white;
+		}
+	}
+}
+
+br {
+	&.spacer {
+		margin-top: 1em;
+		padding: 1em;
+	}
+}
+
+
 nav {
 	margin-top: 1em;
+}
+
+
+footer {
+	margin-top: 3em;
+
+	padding-top: 1em;
+	padding-bottom: 1em;
+
+	color: $grey;
+
+	p {
+		a {
+			color: $grey;
+
+			&:hover {
+				background: transparent;
+				color: $black;
+				text-decoration: none;
+			}
+
+			&:visited {
+				color: $grey;
+
+				&:hover {
+					color: $black;
+				}
+			}
+		}
+	}
+}
+
+
+
+
+.translation_missing {
+	background: $red;
+	color: $white_smoke;
 }
