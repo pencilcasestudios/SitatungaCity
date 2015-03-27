@@ -18,11 +18,11 @@
 		<%= render "analytics" %>
 	</head>
 	<body id="<%= body_id %>" class="<%= yield(:body_class).present? ? yield(:body_class) : "page" %>">
-		<%= render "notifications" %>
-
-		<%= render "navigation" %>
-
 		<div class="container">
+			<%= render "navigation" %>
+
+			<%= render "notifications" %>
+
 			<%= yield %>
 		</div>
 
