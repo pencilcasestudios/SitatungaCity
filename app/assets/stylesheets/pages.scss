@@ -1,0 +1,33 @@
+// Common settings
+@import "common";
+
+
+
+
+#pages {
+	header {
+		&.welcome {
+			background-color: $black_semi_transparent;
+			padding: 2em;
+			text-align: right;
+
+			h1 {
+				font-weight: bold;
+				color: $white_smoke;
+				text-shadow: 1px 1px $black;
+			}
+
+			p {
+				color: $white_smoke;
+				text-shadow: 1px 1px $black;
+			}
+		}
+	}
+
+	// Don't show the footer on the welcome page
+	&.home {
+		footer {
+			display: none;
+		}
+	}
+}
