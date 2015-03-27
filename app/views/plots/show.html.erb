@@ -1,79 +1,26 @@
-<p id="notice"><%= notice %></p>
+<% title t("views.plots.show.title", project_name: @plot.housing_project.name, plot_name: @plot.street_address)  %>
 
-<p>
-  <strong>Is available:</strong>
-  <%= @plot.is_available %>
-</p>
 
-<p>
-  <strong>Area:</strong>
-  <%= @plot.area %>
-</p>
 
-<p>
-  <strong>Cash price:</strong>
-  <%= @plot.cash_price %>
-</p>
 
-<p>
-  <strong>Installment amount:</strong>
-  <%= @plot.installment_amount %>
-</p>
+<section id="availability">
+  <h1>
+    <%= link_to @plot.housing_project.name, housing_projects_path %><br />
+    <%= @plot.street_address %>
+  </h1>
 
-<p>
-  <strong>Term deposit amount:</strong>
-  <%= @plot.term_deposit_amount %>
-</p>
+  <br />
 
-<p>
-  <strong>Total installments:</strong>
-  <%= @plot.total_installments %>
-</p>
+  <p>
+    <strong><%= t("views.plots.show.copy.area") %></strong>:
+    <%= t("views.plots.show.copy.plot_area", plot_area_in_hectares: number_with_precision(@plot.area, precision: 1), plot_area_in_acres: number_with_precision(@plot.area * 2.47105, precision: 1)) %><br />
 
-<p>
-  <strong>Housing project:</strong>
-  <%= @plot.housing_project %>
-</p>
+    <strong><%= t("views.plots.show.copy.available") %></strong>:
+    <%= t("views.plots.show.copy.availability.#{@plot.is_available?}") %>
+  </p>
+</section><!-- /#availability -->
 
-<p>
-  <strong>User:</strong>
-  <%= @plot.user %>
-</p>
 
-<p>
-  <strong>Beacon code:</strong>
-  <%= @plot.beacon_code %>
-</p>
 
-<p>
-  <strong>Designation:</strong>
-  <%= @plot.designation %>
-</p>
 
-<p>
-  <strong>Image map coordinates:</strong>
-  <%= @plot.image_map_coordinates %>
-</p>
-
-<p>
-  <strong>Image map shape:</strong>
-  <%= @plot.image_map_shape %>
-</p>
-
-<p>
-  <strong>State:</strong>
-  <%= @plot.state %>
-</p>
-
-<p>
-  <strong>Street address:</strong>
-  <%= @plot.street_address %>
-</p>
-
-<p>
-  <strong>Description:</strong>
-  <%= @plot.description %>
-</p>
-
-<%= link_to 'Edit', edit_plot_path(@plot) %> |
-<%= link_to 'Back', plots_path %>
+<br class="section_break">
