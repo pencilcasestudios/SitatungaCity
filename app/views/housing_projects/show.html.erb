@@ -1,0 +1,44 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Cover image:</strong>
+  <%= @housing_project.cover_image %>
+</p>
+
+<p>
+  <strong>Gps coordinates:</strong>
+  <%= @housing_project.gps_coordinates %>
+</p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @housing_project.name %>
+</p>
+
+<p>
+  <strong>Plot layout image:</strong>
+  <%= @housing_project.plot_layout_image %>
+</p>
+
+<p>
+  <strong>Plot layout image dimensions:</strong>
+  <%= @housing_project.plot_layout_image_dimensions %>
+</p>
+
+<p>
+  <strong>State:</strong>
+  <%= @housing_project.state %>
+</p>
+
+<p>
+  <strong>Subdomain:</strong>
+  <%= @housing_project.subdomain %>
+</p>
+
+<p>
+  <strong>Summary:</strong>
+  <%= @housing_project.summary %>
+</p>
+
+<%= link_to 'Edit', edit_housing_project_path(@housing_project) %> |
+<%= link_to 'Back', housing_projects_path %>

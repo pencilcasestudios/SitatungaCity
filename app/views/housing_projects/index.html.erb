@@ -1,0 +1,41 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Listing Housing Projects</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Cover image</th>
+      <th>Gps coordinates</th>
+      <th>Name</th>
+      <th>Plot layout image</th>
+      <th>Plot layout image dimensions</th>
+      <th>State</th>
+      <th>Subdomain</th>
+      <th>Summary</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @housing_projects.each do |housing_project| %>
+      <tr>
+        <td><%= housing_project.cover_image %></td>
+        <td><%= housing_project.gps_coordinates %></td>
+        <td><%= housing_project.name %></td>
+        <td><%= housing_project.plot_layout_image %></td>
+        <td><%= housing_project.plot_layout_image_dimensions %></td>
+        <td><%= housing_project.state %></td>
+        <td><%= housing_project.subdomain %></td>
+        <td><%= housing_project.summary %></td>
+        <td><%= link_to 'Show', housing_project %></td>
+        <td><%= link_to 'Edit', edit_housing_project_path(housing_project) %></td>
+        <td><%= link_to 'Destroy', housing_project, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Housing project', new_housing_project_path %>
