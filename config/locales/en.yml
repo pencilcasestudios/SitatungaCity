@@ -66,6 +66,19 @@ en:
 
 
     pages:
+      about:
+        copy:
+          overview_html: |
+            <p>Sitatunga City is the latest land sale project launched by Galaunia Farms Limited. The name Sitatunga was adopted from Africa&rsquo;s <a href="http://www.awf.org/wildlife-conservation/sitatunga" target="_blank">only true amphibious antelope</a>. They live in thickly vegetated muddy swamps and marshes and are found in the North of Zambia and in our neighbours and near-neighbours to the North.</p>
+            <p>Sitatunga City is located in Lusaka&rsquo;s Eastern suburbs bordered by Vorna Valley to the West and Ndeke Village to the East. It comprises of 568 residential plots and is aimed to give medium-income groups the opportunity to purchase and develop their own fully serviced residence. The plots sizes range between 330 to 2000 square meters.</p>
+            <p>Customers have two payment options from which to choose. The first option is the cash option were customers pay the full purchase price at one go and the second option is the scheme option which requires one to pay a deposit of ZMW10,000.00 and monthly installments dependent on the plot size within a period of four years.</p>
+          tagline_html: |
+            <p class="lead">Welcome home!</p>
+        link:
+          residential_estate: Residential estate details
+          title:
+            residential_estate: "View location, layout, availability and pricing details"
+        title: About Sitatunga City
       contact:
         title: Contact Us
       home:
