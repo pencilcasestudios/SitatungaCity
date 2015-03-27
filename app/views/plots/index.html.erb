@@ -1,0 +1,55 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Listing Plots</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Is available</th>
+      <th>Area</th>
+      <th>Cash price</th>
+      <th>Installment amount</th>
+      <th>Term deposit amount</th>
+      <th>Total installments</th>
+      <th>Housing project</th>
+      <th>User</th>
+      <th>Beacon code</th>
+      <th>Designation</th>
+      <th>Image map coordinates</th>
+      <th>Image map shape</th>
+      <th>State</th>
+      <th>Street address</th>
+      <th>Description</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @plots.each do |plot| %>
+      <tr>
+        <td><%= plot.is_available %></td>
+        <td><%= plot.area %></td>
+        <td><%= plot.cash_price %></td>
+        <td><%= plot.installment_amount %></td>
+        <td><%= plot.term_deposit_amount %></td>
+        <td><%= plot.total_installments %></td>
+        <td><%= plot.housing_project %></td>
+        <td><%= plot.user %></td>
+        <td><%= plot.beacon_code %></td>
+        <td><%= plot.designation %></td>
+        <td><%= plot.image_map_coordinates %></td>
+        <td><%= plot.image_map_shape %></td>
+        <td><%= plot.state %></td>
+        <td><%= plot.street_address %></td>
+        <td><%= plot.description %></td>
+        <td><%= link_to 'Show', plot %></td>
+        <td><%= link_to 'Edit', edit_plot_path(plot) %></td>
+        <td><%= link_to 'Destroy', plot, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Plot', new_plot_path %>

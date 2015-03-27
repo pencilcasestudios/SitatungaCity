@@ -1,0 +1,77 @@
+<%= form_for(@plot) do |f| %>
+  <% if @plot.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@plot.errors.count, "error") %> prohibited this plot from being saved:</h2>
+
+      <ul>
+      <% @plot.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :is_available %><br>
+    <%= f.check_box :is_available %>
+  </div>
+  <div class="field">
+    <%= f.label :area %><br>
+    <%= f.text_field :area %>
+  </div>
+  <div class="field">
+    <%= f.label :cash_price %><br>
+    <%= f.text_field :cash_price %>
+  </div>
+  <div class="field">
+    <%= f.label :installment_amount %><br>
+    <%= f.text_field :installment_amount %>
+  </div>
+  <div class="field">
+    <%= f.label :term_deposit_amount %><br>
+    <%= f.text_field :term_deposit_amount %>
+  </div>
+  <div class="field">
+    <%= f.label :total_installments %><br>
+    <%= f.text_field :total_installments %>
+  </div>
+  <div class="field">
+    <%= f.label :housing_project_id %><br>
+    <%= f.text_field :housing_project_id %>
+  </div>
+  <div class="field">
+    <%= f.label :user_id %><br>
+    <%= f.text_field :user_id %>
+  </div>
+  <div class="field">
+    <%= f.label :beacon_code %><br>
+    <%= f.text_field :beacon_code %>
+  </div>
+  <div class="field">
+    <%= f.label :designation %><br>
+    <%= f.text_field :designation %>
+  </div>
+  <div class="field">
+    <%= f.label :image_map_coordinates %><br>
+    <%= f.text_field :image_map_coordinates %>
+  </div>
+  <div class="field">
+    <%= f.label :image_map_shape %><br>
+    <%= f.text_field :image_map_shape %>
+  </div>
+  <div class="field">
+    <%= f.label :state %><br>
+    <%= f.text_field :state %>
+  </div>
+  <div class="field">
+    <%= f.label :street_address %><br>
+    <%= f.text_field :street_address %>
+  </div>
+  <div class="field">
+    <%= f.label :description %><br>
+    <%= f.text_area :description %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>
