@@ -43,10 +43,38 @@ en:
 
   # Views
   views:
+    application:
+      _footer:
+        copy:
+          website_by: Website by
+        link:
+          title:
+            developer: Learn more about the developer of the Sitatunga City website
+      _navigation:
+        link:
+          about: About
+          contact: Contact
+          residential_estate: Residential Estate
+          title:
+            about: Learn more about the Sitatunga City land-purchase scheme
+            contact: Contact our office and book a site visit
+            home: "Sitatunga City comprises 568 residential plots available for purchase in Lusaka's Eastern suburbs"
+            residential_estate: "View location, availability and purchase options"
+
+
+
+
+
     pages:
       contact:
         title: Contact Us
       home:
         copy:
           welcome_html: |
-            <p>Welcome home.</p>
+            <p>Named after the proud and stately Sitatunga antelope, Sitatunga City comprises 568 residential plots available for purchase in Lusaka's Eastern suburbs.</p>
+            <p>Welcome home!</p>
+        link:
+          learn_more: Learn more
+          title:
+            learn_more: Learn more
+        title: Sitatunga City

@@ -1,4 +1,23 @@
-<%= t("views.pages.home.copy.welcome_html") %>
+<% body_class "home" %>
+
+
+<div class="row">
+	<div class="col-lg-4 col-lg-offset-8
+							col-md-4 col-md-offset-8
+							col-sm-6 col-sm-offset-6">
+		<header class="welcome">
+			<h1><%= t("views.pages.home.title") %></h1>
+			<%= t("views.pages.home.copy.welcome_html") %>
+
+			<br />
+
+			<p>
+				<%= link_to t("views.pages.home.link.learn_more"), page_path('about'), class: "btn btn-primary btn-lg", role: "button", title: t("views.pages.home.link.title.learn_more") %>
+			</p>
+		</header>
+	</div>
+</div>
+
 
 
 
@@ -14,7 +33,6 @@
 			{ src: "<%= asset_path "slides/3.jpg" %>" },
 			{ src: "<%= asset_path "slides/4.jpg" %>" },
 			{ src: "<%= asset_path "slides/5.jpg" %>" },
-			{ src: "<%= asset_path "slides/6.jpg" %>" },
 			{ src: "<%= asset_path "slides/7.jpg" %>" },
 			{ src: "<%= asset_path "slides/8.jpg" %>" },
 		]
