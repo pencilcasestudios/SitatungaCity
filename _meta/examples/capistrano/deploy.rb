@@ -87,6 +87,81 @@ end
 
 
 
+
+
+
+
+
+# Use Capistrano and rake to take care of helpful database tasks
+# Ref: https://github.com/dei79/capistrano-rails-collection/blob/master/lib/capistrano/tasks/db.rake
+namespace :db do
+  desc "Drop the database to an empty state"
+  task :drop do
+    on roles(:all) do
+      within release_path do
+        execute :rake, "db:drop RAILS_ENV=#{fetch(:rails_env)}"
+      end
+    end
+  end
+
+
+  desc "Reset the database to an empty state"
+  task :reset do
+    on roles(:all) do
+      within release_path do
+        execute :rake, "db:reset RAILS_ENV=#{fetch(:rails_env)}"
+      end
+    end
+  end
+
+
+  desc "Create the database, load the schema, and initialize with the seed data (use db:reset to also drop the db first)"
+  task :setup do
+    on roles(:all) do
+      within release_path do
+        execute :rake, "db:setup RAILS_ENV=#{fetch(:rails_env)}"
+      end
+    end
+  end
+
+
+  desc "Load the seed data from db/seeds.rb"
+  task :seed do
+    on roles(:all) do
+      within release_path do
+        execute :rake, "db:seed RAILS_ENV=#{fetch(:rails_env)}"
+      end
+    end
+  end
+
+
+  desc "Migrate the database"
+  task :migrate do
+    on roles(:all) do
+      within release_path do
+        execute :rake, "db:migrate RAILS_ENV=#{fetch(:rails_env)}"
+      end
+    end
+  end
+
+  desc "Rolls the schema back to the previous version"
+  task :rollback do
+    on roles(:all) do
+      within release_path do
+        execute :rake, "db:rollback RAILS_ENV=#{fetch(:rails_env)}"
+      end
+    end
+  end
+end
+
+
+
+
+
+
+
+
+
 # Hooks
 # Ref: https://github.com/rvm/rvm1-capistrano3
 before "deploy", "rvm1:install:ruby"  # install/update Ruby
