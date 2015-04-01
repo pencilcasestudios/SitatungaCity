@@ -172,4 +172,4 @@ before "rvm1:install:rvm", "deploy:update_rvm_key"
 # Synchronise assets
 before "deploy:compile_assets", "deploy:sync_assets"
 
-after "deploy:publishing", "deploy:restart"
+#after "deploy:publishing", "deploy:restart"
