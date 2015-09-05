@@ -64,6 +64,12 @@ rake jobs:work # In another terminal window - to run delayed job
 cd ~/Code/Rails/SitatungaCity
 rails console # In another terminal window - to manage administrators
 
+# In another terminal window
+# Ref: http://blog.bottega8.com/how-to-setup-browsersync-with-rails/
+# Start BrowserSync
+cd ~/Code/Rails/SitatungaCity
+./node_modules/.bin/browser-sync start --proxy sitatungacity.dev:3101 --files "app/assets/stylesheets/**/*.scss, app/assets/javascripts/**/*.js, app/views/**/*.html.erb"
+
 # View the site in a browser by visiting
 http://sitatungacity.dev:3101
 
@@ -777,6 +783,21 @@ sudo service monit reload
 
 # Hints
 #======
+
+# BrowserSync
+#------------
+# Ref: http://blog.bottega8.com/how-to-setup-browsersync-with-rails/
+
+# In one window
+# Start the Rails server
+cd ~/Code/Rails/SitatungaCity
+rails server
+
+# In another window
+# Start BrowserSync
+cd ~/Code/Rails/SitatungaCity
+./node_modules/.bin/browser-sync start --proxy sitatungacity.dev:3101 --files "app/assets/stylesheets/**/*.scss, app/assets/javascripts/**/*.js, app/views/**/*.html.erb"
+
 
 # gzip
 #-----
