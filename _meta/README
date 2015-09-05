@@ -2,13 +2,13 @@
 # Development setup
 # Setting up the development environment after a fresh repository clone
 #----------------------------------------------------------------------
-cd ~/Code/SitatungaCity
+cd ~/Code/Rails/SitatungaCity
 cp _meta/examples/database/database.yml config # Setup the database
 cp _meta/examples/config/config.yml config # Setup the configuration files
 cp -r _meta/examples/capistrano/deploy* config # Setup the capistrano deployment recipe
 
 # Set up symbolic link to externlised assets
-cd ~/Code/SitatungaCity/app/assets
+cd ~/Code/Rails/SitatungaCity/app/assets
 ln -nfs ~/Dropbox/Sitatunga\ City/Externalised\ Assets/Sitatunga\ City\ Website/Images/ images
 ln -nfs ~/Dropbox/Sitatunga\ City/Externalised\ Assets/Sitatunga\ City\ Website/PDFs/ pdfs
 
@@ -32,18 +32,19 @@ git push production
 
 
 # Bundle install
-cd ~/Code/SitatungaCity
+cd ~/Code/Rails/SitatungaCity
 bundle install
 
 
 # Bundle update
-cd ~/Code/SitatungaCity
-bundle update
+cd ~/Code/Rails/SitatungaCity
+bundle update --verbose
 gem cleanup
+notify-send "Bundle updated"
 
 
 # Guard for testing
-cd ~/Code/SitatungaCity
+cd ~/Code/Rails/SitatungaCity
 rake db:drop
 rake db:setup
 rake db:test:prepare
@@ -54,13 +55,13 @@ bundle exec guard
 
 # Running the Application in development
 #=======================================
-cd ~/Code/SitatungaCity
+cd ~/Code/Rails/SitatungaCity
 rails server --port=3101 --binding=sitatungacity.dev # In one terminal window - to run the application
 
-cd ~/Code/SitatungaCity
+cd ~/Code/Rails/SitatungaCity
 rake jobs:work # In another terminal window - to run delayed job
 
-cd ~/Code/SitatungaCity
+cd ~/Code/Rails/SitatungaCity
 rails console # In another terminal window - to manage administrators
 
 # View the site in a browser by visiting
@@ -87,7 +88,7 @@ u.admin?
 # Gem management
 #===============
 # MAINTAIN GEM BUNDLE
-cd ~/Code/SitatungaCity
+cd ~/Code/Rails/SitatungaCity
 bundle update
 gem cleanup
 
@@ -100,7 +101,7 @@ gem list | cut -d" " -f1 | xargs gem uninstall -aIx
 # Continuous Application Deployment
 #==================================
 # VIRTUAL
-cd ~/Code/SitatungaCity
+cd ~/Code/Rails/SitatungaCity
 git checkout master
 git merge dev
 git push
@@ -112,7 +113,7 @@ git push origin master --tags
 git push bitbucket master --tags
 
 # STAGING
-cd ~/Code/SitatungaCity
+cd ~/Code/Rails/SitatungaCity
 git checkout master
 git merge dev
 git push
@@ -124,7 +125,7 @@ git push origin master --tags
 git push bitbucket master --tags
 
 # PRODUCTION
-cd ~/Code/SitatungaCity
+cd ~/Code/Rails/SitatungaCity
 git checkout master
 git merge dev
 git push
@@ -209,7 +210,7 @@ exit
 
 # Push to the Git repository:
 # From the development machine:
-cd ~/Code/SitatungaCity
+cd ~/Code/Rails/SitatungaCity
 git remote add virtual deploy@rails.vm:/var/Repositories/Git/SitatungaCity.git
 git push virtual master # or git push virtual
 
@@ -228,7 +229,7 @@ sudo chown deploy:deploy /var/AssetsVault
 
 # Configure nginx
 # On the development machine
-cd ~/Code/SitatungaCity/_meta/examples/nginx
+cd ~/Code/Rails/SitatungaCity/_meta/examples/nginx
 scp nginx.sitatungacity.virtual.conf vladimir@rails.vm:~/sitatungacity.virtual.conf
 
 
@@ -290,16 +291,16 @@ create database SitatungaCity_virtual_test;
 
 # Setup the YAML and .env configuration files:
 # From the development machine
-cd ~/Code/SitatungaCity/_meta/examples/config
+cd ~/Code/Rails/SitatungaCity/_meta/examples/config
 scp config.virtual.yml deploy@rails.vm:~/config.yml
 
-cd ~/Code/SitatungaCity/_meta/examples/database
+cd ~/Code/Rails/SitatungaCity/_meta/examples/database
 scp database.virtual.yml deploy@rails.vm:~/database.yml
 
-cd ~/Code/SitatungaCity/_meta/examples/env
+cd ~/Code/Rails/SitatungaCity/_meta/examples/env
 scp .env.virtual deploy@rails.vm:~/.env
 
-cd ~/Code/SitatungaCity/
+cd ~/Code/Rails/SitatungaCity/
 ssh deploy@rails.vm
 
 # From the virtual machine (as the deploy user)
@@ -313,7 +314,7 @@ exit
 # From the development machine
 # Capistrano steps for initial deployment
 # VIRTUAL MACHINE DEPLOYMENT
-cd ~/Code/SitatungaCity/
+cd ~/Code/Rails/SitatungaCity/
 git checkout master
 git merge dev
 git push
@@ -333,7 +334,7 @@ cp .env /var/Apps/SitatungaCity/virtual/shared/
 exit
 
 # From the development machine
-cd ~/Code/SitatungaCity/
+cd ~/Code/Rails/SitatungaCity/
 cap virtual deploy:check
 cap virtual deploy
 
@@ -416,7 +417,7 @@ exit
 
 # Push to the Git repository:
 # From the development machine:
-cd ~/Code/SitatungaCity
+cd ~/Code/Rails/SitatungaCity
 git remote add staging deploy@asher.vps:/var/Repositories/Git/SitatungaCity.git
 git push staging master # or git push staging
 
@@ -435,7 +436,7 @@ sudo chown deploy:deploy /var/AssetsVault
 
 # Configure nginx
 # On the development machine
-cd ~/Code/SitatungaCity/_meta/examples/nginx
+cd ~/Code/Rails/SitatungaCity/_meta/examples/nginx
 scp nginx.sitatungacity.clientcase.net.conf silumesii@asher.vps:~/sitatungacity.clientcase.net.conf
 
 
@@ -497,16 +498,16 @@ create database SitatungaCity_staging_test;
 
 # Setup the YAML and .env configuration files:
 # From the development machine
-cd ~/Code/SitatungaCity/_meta/examples/config
+cd ~/Code/Rails/SitatungaCity/_meta/examples/config
 scp config.sitatungacity.clientcase.net.yml deploy@asher.vps:~/config.yml
 
-cd ~/Code/SitatungaCity/_meta/examples/database
+cd ~/Code/Rails/SitatungaCity/_meta/examples/database
 scp database.sitatungacity.clientcase.net.yml deploy@asher.vps:~/database.yml
 
-cd ~/Code/SitatungaCity/_meta/examples/env
+cd ~/Code/Rails/SitatungaCity/_meta/examples/env
 scp .env.sitatungacity.clientcase.net deploy@asher.vps:~/.env
 
-cd ~/Code/SitatungaCity/
+cd ~/Code/Rails/SitatungaCity/
 ssh deploy@asher.vps
 
 # From the staging machine (as the deploy user)
@@ -520,7 +521,7 @@ exit
 # From the development machine
 # Capistrano steps for initial deployment
 # VIRTUAL MACHINE DEPLOYMENT
-cd ~/Code/SitatungaCity/
+cd ~/Code/Rails/SitatungaCity/
 git checkout master
 git merge dev
 git push
@@ -540,7 +541,7 @@ cp .env /var/Apps/SitatungaCity/staging/shared/
 exit
 
 # From the development machine
-cd ~/Code/SitatungaCity/
+cd ~/Code/Rails/SitatungaCity/
 cap staging deploy:check
 cap staging deploy
 
@@ -623,7 +624,7 @@ exit
 
 # Push to the Git repository:
 # From the development machine:
-cd ~/Code/SitatungaCity
+cd ~/Code/Rails/SitatungaCity
 git remote add production deploy@gad.vps:/var/Repositories/Git/SitatungaCity.git
 git push production master # or git push production
 
@@ -642,7 +643,7 @@ sudo chown deploy:deploy /var/AssetsVault
 
 # Configure nginx
 # On the development machine
-cd ~/Code/SitatungaCity/_meta/examples/nginx
+cd ~/Code/Rails/SitatungaCity/_meta/examples/nginx
 scp nginx.sitatungacity.co.zm.conf silumesii@gad.vps:~/sitatungacity.co.zm.conf
 
 
@@ -704,16 +705,16 @@ create database SitatungaCity_production_test;
 
 # Setup the YAML and .env configuration files:
 # From the development machine
-cd ~/Code/SitatungaCity/_meta/examples/config
+cd ~/Code/Rails/SitatungaCity/_meta/examples/config
 scp config.sitatungacity.co.zm.yml deploy@gad.vps:~/config.yml
 
-cd ~/Code/SitatungaCity/_meta/examples/database
+cd ~/Code/Rails/SitatungaCity/_meta/examples/database
 scp database.sitatungacity.co.zm.yml deploy@gad.vps:~/database.yml
 
-cd ~/Code/SitatungaCity/_meta/examples/env
+cd ~/Code/Rails/SitatungaCity/_meta/examples/env
 scp .env.sitatungacity.co.zm deploy@gad.vps:~/.env
 
-cd ~/Code/SitatungaCity/
+cd ~/Code/Rails/SitatungaCity/
 ssh deploy@gad.vps
 
 # From the production machine (as the deploy user)
@@ -727,7 +728,7 @@ exit
 # From the development machine
 # Capistrano steps for initial deployment
 # VIRTUAL MACHINE DEPLOYMENT
-cd ~/Code/SitatungaCity/
+cd ~/Code/Rails/SitatungaCity/
 git checkout master
 git merge dev
 git push
@@ -752,7 +753,7 @@ cap production deploy
 
 
 # After deploying the app
-cd ~/Code/SitatungaCity/
+cd ~/Code/Rails/SitatungaCity/
 # From the production machine
 sudo service monit reload
 
@@ -832,7 +833,7 @@ rvm @global do gem cleanup
 # Billing
 #--------
 # Use git_time_extractor
-cd ~/Code/SitatungaCity
+cd ~/Code/Rails/SitatungaCity
 git_time_extractor > ~/Desktop/sitatungacity_time_log.csv --initial-effort 15 --merge-effort 15 --session-duration 2
 
 
