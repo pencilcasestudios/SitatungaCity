@@ -46,3 +46,9 @@ public/assets/
 # Serve them from an externalised source
 app/assets/images
 app/assets/pdfs
+
+
+
+
+# NPM
+node_modules
