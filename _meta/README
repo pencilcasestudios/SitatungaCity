@@ -799,6 +799,13 @@ cd ~/Code/Rails/SitatungaCity
 ./node_modules/.bin/browser-sync start --proxy sitatungacity.dev:3101 --files "app/assets/stylesheets/**/*.scss, app/assets/javascripts/**/*.js, app/views/**/*.html.erb"
 
 
+# Git
+#----
+
+# Delete a remote branch
+git push origin --delete <branchName>
+
+
 # gzip
 #-----
 gzip database.sql
