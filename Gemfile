@@ -85,7 +85,7 @@ gem 'meta-tags', '~> 2.0.0'
 
 # Rails Assets
 # Ref: https://rails-assets.org/
-gem 'bundler', '>= 1.7.0'
+gem 'bundler', '~> 1.10.6'
 
 source 'https://rails-assets.org' do
   # Bootstrap - UI framework
