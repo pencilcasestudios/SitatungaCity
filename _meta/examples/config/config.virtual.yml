@@ -10,7 +10,7 @@ defaults: &defaults
   application_name: SitatungaCity
   applications_folder: "/var/Apps"
   gemset_name: roan-park-rails.4.2.x
-  ruby_version: ruby-2.2.0
+  ruby_version: ruby-2.2.1
   deploy_user: deploy
 
   miniumum_version_of_bundler: ">=1.8.2"
